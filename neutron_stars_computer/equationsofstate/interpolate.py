@@ -47,11 +47,11 @@ class RIPEOS(EquationOfState):
     def energy_density_from(self, pressure: float) -> float:
         return float(self.interpolations["e"](pressure))
 
-    def baryon_density_from(self, pressure: float) -> float:
-        return float(self.interpolations["n"](pressure))
+    #def baryon_density_from(self, pressure: float) -> float:
+    #    return float(self.interpolations["n"](pressure))
 
-    def adiabatic_index_from(self, pressure: float) -> float:
-        return float(self.interpolations["gamma"](pressure))
+    #def adiabatic_index_from(self, pressure: float) -> float:
+    #    return float(self.interpolations["gamma"](pressure))
 
-    def sound_speed_squared_from(self, pressure: float) -> float:
-        return float(self.interpolations["cs2"](pressure))
+    #def sound_speed_squared_from(self, pressure: float) -> float:
+    #    return float(self.interpolations["cs2"](pressure))

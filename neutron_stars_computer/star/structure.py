@@ -37,6 +37,18 @@ class Star:
     omega_squared: Optional[float] = None
 
 
+@dataclass(slots=True)
+class TwoFluidStar:
+    central_density_1: float
+    central_density_2: float
+    radius_1: float
+    radius_2: float
+    mass_1: float
+    mass_2: float
+    mode: Optional[int] = None
+    omega_squared: Optional[float] = None    
+
+
 def interpol_tov(profile: InternalProfiles) -> tuple[Any, ...]:
     """Interpolates the TOV solution using cubic splines."""
 
