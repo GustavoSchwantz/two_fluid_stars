@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 
 def main() -> None:
-    MF = 1
+    MF = 2
 
     eos: EquationOfState = FermionicDarkMatter(MF)
 
