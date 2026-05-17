@@ -18,7 +18,7 @@ Array = np.ndarray
 
 
 def main() -> None:
-    #create_stars(np.linspace(5, 300, 100), TOVInput(CFL(70)), './Huang_2026/CFL_B70_d160_ms150_lin_5_300_100.csv')
+    #create_stars(np.geomspace(1e-9, 300, 150), TOVInput(CFL(70)), '/home/gustavo/Quarks/Huang_2026/figura_1/CFL_B70_d160_ms150_geom_1e-9_300_150.csv')
 
     """
     plot_eos([MasslessMITBM(60), MasslessMITBM(90), 
@@ -34,8 +34,8 @@ def main() -> None:
     
     x: str = 'radius'
     y: str = 'mass'
-    input_folder: str = '/home/gustavo/Quarks//Huang_2026/figura_1/'
-    output_folder: str = '/home/gustavo/Quarks//Huang_2026/Figura_2.png'
+    input_folder: str = '/home/gustavo/Quarks/Huang_2026/figura_1/'
+    output_folder: str = '/home/gustavo/Quarks/Huang_2026/Figura_2.png'
     labels: list[str] = ['CFL']
     linestyles: list[str] = ['-']
     colors: list[str] = ['black']
@@ -63,7 +63,7 @@ def create_stars(central_pressures: Array, tov_input: TOVInput, path: str) -> No
     stars.to_csv(path)
     
     end = time.time()
-    print('Done!')
+    print('Stars created!')
     print(f'Time to complete: {end - start:.2f} s')
 
 
