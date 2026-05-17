@@ -15,6 +15,8 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
 	folder_path = Path(input_folder)
 
 	for f, label, linestyle, color in zip(folder_path.iterdir(), labels, linestyles, colors):
+		#print(f.name)
+		#print(color)
 		pd.read_csv(input_folder + f.name).plot(x, y, xlim=xlim, ylim=ylim, ax=ax, 
 			label=label, linestyle=linestyle, color=color, linewidth=linewidth)
         
