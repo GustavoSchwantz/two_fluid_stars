@@ -39,6 +39,8 @@ class Star:
 
 @dataclass(slots=True)
 class TwoFluidStar:
+    central_pressure_1: float
+    central_pressure_2: float
     central_density_1: float
     central_density_2: float
     radius_1: float

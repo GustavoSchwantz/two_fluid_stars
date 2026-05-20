@@ -21,12 +21,12 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
 			label=label, linestyle=linestyle, color=color, linewidth=linewidth)
         
     
-	ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
+	ax.xaxis.set_major_locator(ticker.MultipleLocator(500))
 	ax.yaxis.set_major_locator(ticker.MultipleLocator(0.2))
 
 	plt.xlabel(xlabel)
 	plt.ylabel(ylabel)
-	#plt.legend(fontsize)
+	plt.legend(fontsize=fontsize)
 
 	plt.savefig(output_folder)   
 

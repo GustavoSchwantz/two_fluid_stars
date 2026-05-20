@@ -52,7 +52,7 @@ class TwoFluidStarFactory:
         central_density_1 = self.tov_input_two_fluid.eos1.energy_density_from(central_pressure_1)
         central_density_2 = self.tov_input_two_fluid.eos2.energy_density_from(central_pressure_2)
 
-        return TwoFluidStar(central_density_1, central_density_2, r1, r2, m1, m2)
+        return TwoFluidStar(central_pressure_1, central_pressure_2, central_density_1, central_density_2, r1, r2, m1, m2)
 
     #def set_internal_profiles(self) -> InternalProfiles:
     #    return InternalProfiles(self.tov_solution.t, *self.tov_solution.y)

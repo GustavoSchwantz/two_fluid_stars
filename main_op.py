@@ -22,9 +22,9 @@ def main() -> None:
 
     #create_stars(np.geomspace(1e-9, 600, 150), TOVInput( MasslessMITBM(90) ), '/home/gustavo/Quarks/Huang_2026/figura_1/MIT_B90_geom_1e-9_600_150.csv')
     
-    create_stars(np.geomspace(1e-2, 400, 150), 
-        TOVInput( RIPEOS('/home/gustavo/Quarks/neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m1_y0.csv') ), 
-        '/home/gustavo/Quarks/Huang_2026/figura_1/FDM_m1_y0_geom_1e-2_400_150.csv')
+    create_stars(np.geomspace(1e-2, 1e4, 150), 
+        TOVInput( RIPEOS('/home/gustavo/Quarks/neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m2_y0.csv') ), 
+        '/home/gustavo/Quarks/Huang_2026/figura_1/FDM_m2_y0_geom_1e-2_400_150.csv')
 
     """
     plot_eos([MasslessMITBM(60), MasslessMITBM(90), 
@@ -52,7 +52,24 @@ def main() -> None:
     xlabel: str = 'R [km]'
     ylabel: str = r'M [M$_{\odot}$]'
     fontsize: str = '10'
-    plot_solution(x=x, y=y, input_folder=input_folder, output_folder=output_folder, labels=labels, linestyles=linestyles, colors=colors, xlim=xlim, ylim=ylim, linewidth=linewidth, xlabel=xlabel, ylabel=ylabel, fontsize=fontsize)
+    #plot_solution(x=x, y=y, input_folder=input_folder, output_folder=output_folder, labels=labels, linestyles=linestyles, colors=colors, xlim=xlim, ylim=ylim, linewidth=linewidth, xlabel=xlabel, ylabel=ylabel, fontsize=fontsize)
+    
+    
+    #stars = pd.read_csv(input_folder + 'CFL_B70_d160_ms150_geom_1e-9_300_150.csv')
+    #stars = pd.read_csv(input_folder + 'MIT_B90_geom_1e-9_600_150.csv')
+    stars = pd.read_csv(input_folder + 'FDM_m2_y0_geom_1e-2_400_150.csv')
+
+    print(stars)
+
+    eos: EquationOfState = RIPEOS('/home/gustavo/Quarks/neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m2_y0.csv')
+
+    max_mass = stars[stars['mass'] == stars['mass'].max()]
+
+    print(max_mass)
+
+    print('M_max:', max_mass['mass'].values[0])
+    print('R:', max_mass['radius'].values[0])
+    print('e:', eos.energy_density_from(max_mass['central_pressure'].values[0]))
 
 
 def create_stars(central_pressures: Array, tov_input: TOVInput, path: str) -> None:
