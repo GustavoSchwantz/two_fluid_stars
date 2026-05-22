@@ -38,21 +38,19 @@ def main() -> None:
     #        '/home/gustavo/Quarks/Jurgen_with_CFL/figura_6/FDM_m100_y0_CFL_B70_p0_quark_60.csv')
 
     
-    labels: list[str] = [#r'Densidade central de matéria escura: 3 x 10$^9$ MeV/fm$^3$'
-                        # r'Densidade central de matéria de quarks: 484.9 MeV/fm$^3$',
-                         r'Densidade central de matéria escura: 2609.9 MeV/fm$^3$']
+    labels: list[str] = ['chi = 0.1']
     linestyles: list[str] = ['-']
     colors: list[str] = ['red']
 
-    x: str = 'central_density_1'
-    y: str = 'radius_1'
-    input_folder: str = '/home/gustavo/Quarks/Jurgen_with_CFL/figura_6/'
-    output_folder: str = '/home/gustavo/Quarks/Jurgen_with_CFL/FIG_7.png'
-    xlim: tuple = (-0.5e11, 5e11)
-    ylim: tuple = (0.6e-3, 1.9e-3)
+    x: str = 'radius'
+    y: str = 'total_mass'
+    input_folder: str = '/home/gustavo/Quarks/Huang_2026/figura_4/'
+    output_folder: str = '/home/gustavo/Quarks/Huang_2026/teste.png'
+    xlim: tuple = (0, 100)
+    ylim: tuple = (0, 3)
     linewidth: float = 2
-    xlabel: str = 'Central Energy Density of Dark Matter (MeV/fm$^3$)'
-    ylabel: str = 'Radius of Dark Matter (km)'
+    xlabel: str = 'R'
+    ylabel: str = 'M'
     fontsize: str = '9'
     plot_solution(x=x, y=y, input_folder=input_folder, output_folder=output_folder, labels=labels, linestyles=linestyles, colors=colors, xlim=xlim, ylim=ylim, linewidth=linewidth, xlabel=xlabel, ylabel=ylabel, fontsize=fontsize)
     
