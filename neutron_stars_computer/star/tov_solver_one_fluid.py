@@ -73,7 +73,7 @@ def solve_one_fluid_tov(tov_input_one_fluid: TOVInputOneFluid, central_mass: flo
         one_fluid_tov_equations,
         (tov_input_one_fluid.MIN_RADIUS, tov_input_one_fluid.MAX_RADIUS),
         initial_integration_vector,
-        method="DOP853",
+        method="RK23",
         dense_output=True,
         rtol=tov_input_one_fluid.RELATIVE_TOLERANCE,
         atol=tov_input_one_fluid.ABSOLUTE_TOLERANCE,
