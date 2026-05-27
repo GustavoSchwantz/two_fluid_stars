@@ -40,6 +40,64 @@ def solve_two_fluid_tov(tov_input_two_fluid: TOVInputTwoFluid, central_pressure_
     if central_pressure_1 <= 0 or central_pressure_2 <= 0:
         raise ValueError("Central pressures have to be larger than zero.")
 
+    def compute_taylor_expansion_at_center() -> tuple[float, float, float]:
+        """Taylor expansion near the stellar center (r ~ 0)."""
+        r0: float = tov_input_two_fluid.MIN_RADIUS
+        p0: float = central_pressure_1
+        # v0: float = 0
+        e0: float = tov_input_two_fluid.eos1.energy_density_from(pressure=p0)
+        gamma0: float = tov_input_two_fluid.eos1.adiabatic_index_from(pressure=p0)
+
+        v2: float = 8 * np.pi / 3 * (e0 + 3 * p0) * cf.MEV_FM3_TO_KM_2
+        p2: float = -4 * np.pi / 3 * (e0 + p0) * (e0 + 3 * p0) * cf.MEV_FM3_TO_KM_2
+        e2: float = p2 * (e0 + p0) / (gamma0 * p0)
+
+        v4: float = (
+            4 * np.pi / 5 * (e2 + 5 * p2)
+            + 64 * np.pi**2 / 9 * e0 * (e0 + 3 * p0) * cf.MEV_FM3_TO_KM_2
+        )
+        v4 *= cf.MEV_FM3_TO_KM_2
+        p4: float = -2 * np.pi / 5 * (e0 + p0) * (e2 + 5 * p2)
+        p4 -= 2 * np.pi / 3 * (e2 + p2) * (p0 + 3 * p0)
+        p4 -= 32 * np.pi**2 / 9 * e0 * (e0 + p0) * (e0 + 3 * p0) * cf.MEV_FM3_TO_KM_2
+        p4 *= cf.MEV_FM3_TO_KM_2
+
+        vc: float = 0.5 * v2 * r0**2 + 0.25 * v4 * r0**4  # + v0
+        mc: float = 4 * np.pi * r0**3 * e0 / 3
+        pc: float = p0 + 0.5 * p2 * r0**2 + 0.25 * p4 * r0**4
+        # ec: float = e0 + 0.5*e2*r0**2
+
+        return (vc, mc, pc)    
+
+    def compute_taylor_expansion_at_center_2() -> tuple[float, float, float]:
+        """Taylor expansion near the stellar center (r ~ 0)."""
+        r0: float = tov_input_two_fluid.MIN_RADIUS
+        p0: float = central_pressure_2
+        # v0: float = 0
+        e0: float = tov_input_two_fluid.eos2.energy_density_from(pressure=p0)
+        gamma0: float = tov_input_two_fluid.eos2.adiabatic_index_from(pressure=p0)
+
+        v2: float = 8 * np.pi / 3 * (e0 + 3 * p0) * cf.MEV_FM3_TO_KM_2
+        p2: float = -4 * np.pi / 3 * (e0 + p0) * (e0 + 3 * p0) * cf.MEV_FM3_TO_KM_2
+        e2: float = p2 * (e0 + p0) / (gamma0 * p0)
+
+        v4: float = (
+            4 * np.pi / 5 * (e2 + 5 * p2)
+            + 64 * np.pi**2 / 9 * e0 * (e0 + 3 * p0) * cf.MEV_FM3_TO_KM_2
+        )
+        v4 *= cf.MEV_FM3_TO_KM_2
+        p4: float = -2 * np.pi / 5 * (e0 + p0) * (e2 + 5 * p2)
+        p4 -= 2 * np.pi / 3 * (e2 + p2) * (p0 + 3 * p0)
+        p4 -= 32 * np.pi**2 / 9 * e0 * (e0 + p0) * (e0 + 3 * p0) * cf.MEV_FM3_TO_KM_2
+        p4 *= cf.MEV_FM3_TO_KM_2
+
+        vc: float = 0.5 * v2 * r0**2 + 0.25 * v4 * r0**4  # + v0
+        mc: float = 4 * np.pi * r0**3 * e0 / 3
+        pc: float = p0 + 0.5 * p2 * r0**2 + 0.25 * p4 * r0**4
+        # ec: float = e0 + 0.5*e2*r0**2
+
+        return (vc, mc, pc)     
+
 
     def core_event_1(r: float, y: Array) -> float:
         return y[2]
@@ -52,8 +110,14 @@ def solve_two_fluid_tov(tov_input_two_fluid: TOVInputTwoFluid, central_pressure_
 
     core_event_2.terminal  = True
     core_event_2.direction = -1
+
+    #print(compute_taylor_expansion_at_center())
+    #print(compute_taylor_expansion_at_center()[1])
+    #print(compute_taylor_expansion_at_center()[2])
     
     initial_integration_vector = (0.0, 0.0, central_pressure_1, central_pressure_2)
+    #initial_integration_vector = (compute_taylor_expansion_at_center()[1], compute_taylor_expansion_at_center_2()[1], 
+    #                                compute_taylor_expansion_at_center()[2], compute_taylor_expansion_at_center_2()[2])
 
     def two_fluid_tov_equations(r: float, y: Array) -> tuple[float, float, float, float]:
         """TOV equations. System of differential equations for pressures and masses.

@@ -106,8 +106,11 @@ def solve_tov(tov_input: TOVInput, central_pressure: float) -> Any:
         dense_output=True,
         rtol=tov_input.RELATIVE_TOLERANCE,
         atol=tov_input.ABSOLUTE_TOLERANCE,
-        events=(boundary_event, *tov_input.events),
+        events=(boundary_event, *tov_input.events)
     )
+
+    print(tov_integration.t)
+    print(tov_integration.t.size)
 
     def check_integration_validity(success: bool, status: int) -> None:
         if not success:

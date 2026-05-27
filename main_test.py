@@ -18,14 +18,14 @@ Array = np.ndarray
 
 def main() -> None:
 	eos_BM: EquationOfState = CFL(70)
-	central_pressures_BM = np.linspace(1e-9, 251.2, 150)
+	central_pressures_BM = np.geomspace(1e-6, 170, 300)
 	#central_pressures_BM = np.linspace(1.0, 250.0, 250)
 	#central_pressures_BM = np.array([100])
 
-	eos_DM: EquationOfState = RIPEOS('/home/gustavo/Quarks/neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m0.5_y0.csv')
+	eos_DM: EquationOfState = RIPEOS('/home/gustavo/Quarks/neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m1_y0.csv')
 
-	#stars = pd.read_csv('/home/gustavo/Quarks/Huang_2026/figura_1/FDM_m0.5_y0_geom_1e-2_400_150.csv')
-	#stars = pd.read_csv('/home/gustavo/Quarks/Huang_2026/figura_1/CFL_B70_d160_ms150_geom_1e-9_300_150.csv')
+	#stars = pd.read_csv('/home/gustavo/Quarks/Huang_2026/figura_2/FDM_m1_y0_geom_1e-2_400_150.csv')
+	#stars = pd.read_csv('/home/gustavo/Quarks/Huang_2026/figura_2/CFL_B70_d160_ms150_geom_1e-9_300_150.csv')
 
 	#print(stars)
 	#print(stars[ stars['mass'] == stars['mass'].max() ])
@@ -33,20 +33,36 @@ def main() -> None:
 	#print(p)
 	#print(eos_DM.energy_density_from(p))
 
+	#stars.plot('central_pressure', 'mass')
+	#plt.savefig('fig_CFL.png')
+
 
 	tov_input_two_fluid: TOVInputTwoFluid = TOVInputTwoFluid(eos_DM, eos_BM)
 
-	chi_target = 0.1
+	chi_target = 0.3
 
 	list_of_dfs = []
 
+	MF = 100  # in GeV
+
+	dimensionless_central_pressures = np.geomspace(
+        1e-13, 3.3333, 150
+    )  # values similar to the ones used in the paper
+	central_pressures_in_GeV4 = dimensionless_central_pressures * MF**4
+	central_pressures_in_MeV_fm3 = central_pressures_in_GeV4 * cf.GEV4_TO_MEVFM3
+
+	print(central_pressures_in_MeV_fm3)
+
+
+	"""
 	for cp_BM in central_pressures_BM:
 
 		cp_BM_arr = np.array([cp_BM])
 		print(cp_BM)
 		
 		cp_DM_L = 1e-9
-		cp_DM_R = 18.8 # central pressure for maximum mass configuration (m = 0.5, y = 0)
+		#cp_DM_R = 18.8  # central pressure for maximum mass configuration (m = 0.5, y = 0)
+		cp_DM_R = 301.0 # central pressure for maximum mass configuration (m = 1, y = 0)
 
 		while True:
 			cp_DM_M = (cp_DM_L + cp_DM_R) / 2
@@ -89,8 +105,8 @@ def main() -> None:
 
 	print(result)
 
-	result.to_csv('/home/gustavo/Quarks/Huang_2026/teste.csv')
-
+	result.to_csv('/home/gustavo/Quarks/Huang_2026/figura_4/teste_m1_0.3.csv')
+    """
 
 if __name__ == '__main__':
     main()	

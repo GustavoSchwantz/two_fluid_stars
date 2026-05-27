@@ -21,22 +21,27 @@ def main() -> None:
     #create_stars(np.geomspace(1e-9, 300, 150), TOVInput(CFL(70)), '/home/gustavo/Quarks/Huang_2026/figura_1/CFL_B70_d160_ms150_geom_1e-9_300_150.csv')
 
     #create_stars(np.geomspace(1e-9, 600, 150), TOVInput( MasslessMITBM(90) ), '/home/gustavo/Quarks/Huang_2026/figura_1/MIT_B90_geom_1e-9_600_150.csv')
-    
-    create_stars(np.geomspace(1e-2, 1e4, 150), 
-        TOVInput( RIPEOS('/home/gustavo/Quarks/neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m2_y0.csv') ), 
-        '/home/gustavo/Quarks/Huang_2026/figura_1/FDM_m2_y0_geom_1e-2_400_150.csv')
-
     """
-    plot_eos([MasslessMITBM(60), MasslessMITBM(90), 
+    create_stars(np.geomspace(5e-3, 1e4, 300), 
+        TOVInput( RIPEOS('/home/gustavo/Quarks/neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m1_y0.csv'),
+                  #ABSOLUTE_TOLERANCE=[1e-4, 1e-8, 1e-6],
+                  #RELATIVE_TOLERANCE=1e-13,
+                  #MIN_RADIUS=1e-10,
+                  #MAX_RADIUS=1e-2, 
+        ), 
+        '/home/gustavo/Quarks/test/FDM_m1_y0_geom_5e-3_1e4_300.csv')"""
+
+    #"""
+    plot_eos([MasslessMITBM(60), MasslessMITBM(90),
                 RIPEOS('./neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m1_y0.csv'),
                 RIPEOS('./neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m0.5_y0.csv'),
                 RIPEOS('./neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m2_y0.csv'),
-                CFL(70)], 
-                ['MIT60', 'MIT90', 'FF1', 'FF0.5', 'FF2', 'CFL'],
-                ['--', ':', '--', '-', ':', '-'],
-                ['red', 'green', 'cyan', 'blue', 'magenta', 'black'],
-                np.geomspace(1e-1, 1e4, 100), (1e0, 1e5), (1e-1, 1e4), 4, '/home/gustavo/Quarks//Huang_2026/Figure_1_2.png')
-    """
+                CFL(70), MasslessMITBM()], 
+                ['MIT60', 'MIT90', 'FF1', 'FF0.5', 'FF2', 'CFL', 'MIT57'],
+                ['--', ':', '--', '-', ':', '-', '--'],
+                ['red', 'green', 'cyan', 'blue', 'magenta', 'black', 'orange'],
+                np.geomspace(1e-1, 1e4, 100), (1e0, 1e5), (1e-1, 1e4), 4, '/home/gustavo/Quarks//Huang_2026/Figure_1_v2.png')
+    #"""
     
     labels: list[str] = ['CFL', 'MIT60', 'FF1', 'MIT90']
     linestyles: list[str] = ['-', '--', '--', ':']
@@ -57,10 +62,18 @@ def main() -> None:
     
     #stars = pd.read_csv(input_folder + 'CFL_B70_d160_ms150_geom_1e-9_300_150.csv')
     #stars = pd.read_csv(input_folder + 'MIT_B90_geom_1e-9_600_150.csv')
-    stars = pd.read_csv(input_folder + 'FDM_m2_y0_geom_1e-2_400_150.csv')
+    """stars = pd.read_csv('/home/gustavo/Quarks/test/FDM_m1_y0_geom_5e-3_1e4_300.csv')
 
     print(stars)
 
+    print(stars[ stars['mass'] == stars['mass'].max() ])
+
+    stars.plot('radius', 'mass')
+    plt.xlabel('Radius of DM')
+    plt.ylabel('Mass of DM')
+
+    plt.savefig("/home/gustavo/Quarks/test/FDM_m1_y0_geom_5e-3_1e4_300.png")"""
+"""
     eos: EquationOfState = RIPEOS('/home/gustavo/Quarks/neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m2_y0.csv')
 
     max_mass = stars[stars['mass'] == stars['mass'].max()]
@@ -69,7 +82,7 @@ def main() -> None:
 
     print('M_max:', max_mass['mass'].values[0])
     print('R:', max_mass['radius'].values[0])
-    print('e:', eos.energy_density_from(max_mass['central_pressure'].values[0]))
+    print('e:', eos.energy_density_from(max_mass['central_pressure'].values[0]))"""
 
 
 def create_stars(central_pressures: Array, tov_input: TOVInput, path: str) -> None:
