@@ -18,7 +18,7 @@ Array = np.ndarray
 
 
 def main() -> None:
-    N_SOL = 55
+    N_SOL = 35
 
 
     MF = 100
@@ -27,46 +27,52 @@ def main() -> None:
     eos_DM: EquationOfState = RIPEOS(os.path.join(os.getcwd(), 
         f'neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m{MF}_y{Y}.csv'))
     
-    cp_DM = 2.2e2  # 3 x 10^6  MeV/fm^3
+    #cp_DM = 2.2e2  # 3 x 10^6  MeV/fm^3
     #cp_DM = 8.5e8  # 3 x 10^10 MeV/fm^3
     #cp_DM = 2e7    # 3 x 10^9  MeV/fm^3
 
-    central_pressures_DM = np.full(N_SOL, cp_DM)
+    #central_pressures_DM = np.full(N_SOL, cp_DM)
+    central_pressures_DM = np.linspace(1.1e3, 4.5e10, N_SOL)
 
     
     BAG_PRESS = 70
 
     eos_BM: EquationOfState = CFL(BAG_PRESS)
-    central_pressures_BM = np.linspace(5, 1015, N_SOL)
 
-    #central_pressures_BM = np.full(300, 124)   # 484.9 MeV/fm^3
-    #central_pressures_BM = np.full(300, 924)     # 2609.9 MeV/fm^3
-
-    #print(eos_BM.energy_density_from(924))
+    #cp_BM = 173  # 606.4 MeV/fm^3
+    cp_BM = 1100 # 3095.6 MeV/fm^3
+    
+    central_pressures_BM = np.full(N_SOL, cp_BM)
+    #central_pressures_BM = np.linspace(5, 1015, N_SOL)
+      
+    #print(eos_BM.energy_density_from(1100))
 
     tov_input_two_fluid: TOVInputTwoFluid = TOVInputTwoFluid(eos_DM, eos_BM)
 
     #create_mixed_stars(central_pressures_DM, central_pressures_BM, tov_input_two_fluid, 
-    #        os.path.join(os.getcwd(), f'Jurgen_with_CFL/FIG_4/FDM_m{MF}_y{Y}_CFL_B{BAG_PRESS}_{cp_DM}.csv'))
+    #        os.path.join(os.getcwd(), f'Jurgen_with_CFL/FIG_6/FDM_m{MF}_y{Y}_CFL_B{BAG_PRESS}_{cp_BM}.csv'))
            
 
     
-    labels: list[str] = [r'DM central density = 3 x 10$^6$ MeV/fm$^3$', r'DM central density = 3 x 10$^{10}$ MeV/fm$^3$']
-                         #r'DM central density = 3 x 10$^9$ MeV/fm$^3$']
+    labels: list[str] = [r'BM central density = 606.4 MeV/fm$^3$', r'BM central density = 3095.6 MeV/fm$^3$']
+                         #r'DM central density = 3 x 10$^9$ MeV/fm$^3$']                     
     markers: list[str] = ['s', '^']#, '*']
     colors: list[str] = ['blue', 'red']#, 'orange']
 
-    x: str = 'central_density_2'
-    y: str = 'radius_2'
-    input_folder: str = os.path.join(os.getcwd(), f'Jurgen_with_CFL/FIG_4/')
-    xlim: tuple = (0, 3000)
-    ylim: tuple = (0, 14)
-    xlabel: str = r'Central Energy Density of Quark Matter (MeV/fm$^3$)'
+    x: str = 'central_density_1'
+    y: str = 'radius_1'
+    input_folder: str = os.path.join(os.getcwd(), f'Jurgen_with_CFL/FIG_6/')
+    xlim: tuple = (-0.5e11, 5e11)
+    ylim: tuple = (0.6e-3, 1.4e-3)
+    #xlabel: str = r'Central Energy Density of Quark Matter (MeV/fm$^3$)'
+    xlabel: str = r'Central Energy Density of Dark Matter (MeV/fm$^3$)'
     #ylabel: str = r'Mass of Quark Matter (Solar Masses)'
-    ylabel: str = r'Radius of Quark Matter (km)'
+    #ylabel: str = r'Mass of Dark Matter (Solar Masses)'
+    #ylabel: str = r'Radius of Quark Matter (km)'
+    ylabel: str = r'Radius of Dark Matter (km)'
     fontsize: str = '10'
-    loc: str = 'lower right'
-    output_folder: str = os.path.join(os.getcwd(), f'Jurgen_with_CFL/FIG_5.png')
+    loc: str = 'upper right'
+    output_folder: str = os.path.join(os.getcwd(), f'Jurgen_with_CFL/FIG_7.png')
 
     kind='scatter'
     
@@ -88,6 +94,8 @@ def create_mixed_stars(central_pressures_DM: Array, central_pressures_BM: Array,
     two_fluid_stars["mass_2"] = two_fluid_stars["mass_2"] / cf.M_SUN_IN_KM
     
     print(two_fluid_stars)
+
+    #two_fluid_stars = two_fluid_stars[ two_fluid_stars['central_density_1'] < 3.25e11 ]
 
     two_fluid_stars.to_csv(path)
 
