@@ -30,7 +30,7 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
 
 		for csv_file, label, color, marker in zip(csv_files, labels, colors, markers):
 			pd.read_csv(csv_file).plot(x, y, xlim=xlim, ylim=ylim, ax=ax,
-				label=label, linestyle=marker, color=color, kind=kind)
+				label=label, linestyle=marker, color=color, kind=kind, linewidth=3)
     
 	
 	#ax.xaxis.set_major_locator(ticker.MultipleLocator(2e11))

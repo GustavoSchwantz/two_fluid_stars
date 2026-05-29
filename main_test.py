@@ -17,10 +17,15 @@ Array = np.ndarray
 
 
 def main() -> None:
+	BAG_PRESS = 70
+
 	eos_BM: EquationOfState = CFL(70)
-	central_pressures_BM = np.geomspace(1e-4, 160, 300)
+	central_pressures_BM = np.geomspace(1e-4, 1200, 300)
 	#central_pressures_BM = np.linspace(1.0, 250.0, 250)
 	#central_pressures_BM = np.array([100])
+
+	MF = 100
+	Y = 0
 
 	eos_DM: EquationOfState = RIPEOS('/home/gustavo/Quarks/neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m100_y0.csv')
 
@@ -39,7 +44,7 @@ def main() -> None:
 
 	tov_input_two_fluid: TOVInputTwoFluid = TOVInputTwoFluid(eos_DM, eos_BM)
 
-	chi_target = 0.7
+	chi_target = 0.3
 
 	list_of_dfs = []
 
@@ -94,7 +99,7 @@ def main() -> None:
 
 	print(result)
 
-	result.to_csv('/home/gustavo/Quarks/teste_m100_0.7.csv')
+	result.to_csv(f'/home/gustavo/Quarks/DM_CFL/FDM_m{MF}_y{Y}_CFL_B{BAG_PRESS}_chi{chi_target}.csv')
     
 
 if __name__ == '__main__':
