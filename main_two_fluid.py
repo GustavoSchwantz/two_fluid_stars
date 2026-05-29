@@ -54,27 +54,29 @@ def main() -> None:
            
 
     
-    labels: list[str] = [r'BM central density = 606.4 MeV/fm$^3$', r'BM central density = 3095.6 MeV/fm$^3$']
+    labels: list[str] = ['\u03C7 = 0.3', '\u03C7 = 0.7'] #r'BM central density = 606.4 MeV/fm$^3$', r'BM central density = 3095.6 MeV/fm$^3$']
                          #r'DM central density = 3 x 10$^9$ MeV/fm$^3$']                     
-    markers: list[str] = ['s', '^']#, '*']
+    markers: list[str] = ['-', '--']#, '^']#, '*']
     colors: list[str] = ['blue', 'red']#, 'orange']
 
-    x: str = 'central_density_1'
-    y: str = 'radius_1'
-    input_folder: str = os.path.join(os.getcwd(), f'Jurgen_with_CFL/FIG_6/')
-    xlim: tuple = (-0.5e11, 5e11)
-    ylim: tuple = (0.6e-3, 1.4e-3)
+    x: str = 'radius'
+    y: str = 'total_mass'
+    input_folder: str = os.path.join(os.getcwd())#, f'Jurgen_with_CFL/FIG_6/')
+    xlim: tuple = (0, 0.7)
+    ylim: tuple = (0, 2.5e-4)
     #xlabel: str = r'Central Energy Density of Quark Matter (MeV/fm$^3$)'
-    xlabel: str = r'Central Energy Density of Dark Matter (MeV/fm$^3$)'
+    #xlabel: str = r'Central Energy Density of Dark Matter (MeV/fm$^3$)'
+    xlabel: str = 'R [km]'
     #ylabel: str = r'Mass of Quark Matter (Solar Masses)'
     #ylabel: str = r'Mass of Dark Matter (Solar Masses)'
     #ylabel: str = r'Radius of Quark Matter (km)'
-    ylabel: str = r'Radius of Dark Matter (km)'
-    fontsize: str = '10'
+    #ylabel: str = r'Radius of Dark Matter (km)'
+    ylabel: str = r'M [$M_{\odot}$]'
+    fontsize: str = '8'
     loc: str = 'upper right'
-    output_folder: str = os.path.join(os.getcwd(), f'Jurgen_with_CFL/FIG_7.png')
+    output_folder: str = os.path.join(os.getcwd(), 'test_fig.png')#, f'Jurgen_with_CFL/FIG_7.png')
 
-    kind='scatter'
+    kind='line'
     
 
     plot_solution(x=x, y=y, input_folder=input_folder, output_folder=output_folder, labels=labels, 

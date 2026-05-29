@@ -7,6 +7,8 @@ import matplotlib.ticker as ticker
 
 Array = np.ndarray
 
+
+
 def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels: list[str], kind: str, colors: list[str], 
 	xlim: tuple,  ylim: tuple, markers: list[str], xlabel: str, ylabel: str, fontsize: str, loc: str) -> None:
 
@@ -18,11 +20,19 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
 
 	csv_files.sort(key=os.path.getctime)
 
-	for csv_file, label, color, marker in zip(csv_files, labels, colors, markers):
-		pd.read_csv(csv_file).plot(x, y, xlim=xlim, ylim=ylim, ax=ax, 
-			label=label, marker=marker, color=color, kind=kind)
-        
+	if kind == 'scatter':
+
+	    for csv_file, label, color, marker in zip(csv_files, labels, colors, markers):
+		    pd.read_csv(csv_file).plot(x, y, xlim=xlim, ylim=ylim, ax=ax, 
+			    label=label, marker=marker, color=color, kind=kind)
+
+	else:
+
+		for csv_file, label, color, marker in zip(csv_files, labels, colors, markers):
+			pd.read_csv(csv_file).plot(x, y, xlim=xlim, ylim=ylim, ax=ax,
+				label=label, linestyle=marker, color=color, kind=kind)
     
+	
 	#ax.xaxis.set_major_locator(ticker.MultipleLocator(2e11))
 	#ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
 
