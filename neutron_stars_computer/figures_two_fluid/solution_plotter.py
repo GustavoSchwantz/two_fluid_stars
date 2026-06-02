@@ -12,8 +12,6 @@ Array = np.ndarray
 def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels: list[str], kind: str, colors: list[str], 
 	xlim: tuple,  ylim: tuple, markers: list[str], xlabel: str, ylabel: str, fontsize: str, loc: str) -> None:
 
-	print('Creating a figure...')
-
 	fig, ax = plt.subplots()
 
 	csv_files = glob.glob(os.path.join(input_folder, '*.csv'))
@@ -29,8 +27,9 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
 	else:
 
 		for csv_file, label, color, marker in zip(csv_files, labels, colors, markers):
-			pd.read_csv(csv_file).plot(x, y, xlim=xlim, ylim=ylim, ax=ax,
-				label=label, linestyle=marker, color=color, kind=kind, linewidth=3)
+			df: pd.DataFrame = pd.read_csv(csv_file)
+			df.assign(central_density=df['central_density_1'] + df['central_density_2']).plot(x, y, xlim=xlim, ylim=ylim, ax=ax,
+				label=label, linestyle=marker, color=color, kind=kind, linewidth=3, logx=True)
     
 	
 	#ax.xaxis.set_major_locator(ticker.MultipleLocator(2e11))
@@ -41,5 +40,3 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
 	plt.legend(fontsize=fontsize, loc=loc)
 
 	plt.savefig(output_folder)   
-
-	print('Figure created!')
