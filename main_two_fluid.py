@@ -23,21 +23,21 @@ def main() -> None:
 
     ######################### PREAMBLE #########################
 
-    N_SOL: int = 300 # number of times that the TOV equations will solved
+    N_SOL: int = 58 # number of times that the TOV equations will solved
 
     CHI: float = 0.1                              # fraction of dark matter in a two-fluid star
     CHIS: list[float] = [0.1, 0.3, 0.5, 0.7, 0.9] # fractions of dark matter in a two-fluid star
 
-    project_path: str = os.getcwd()                       # current project directory
-    csv_path: str = os.path.join(project_path, 'DM_CFL/')  # directory where the .csv with the TOV solutions will be saved
+    project_path: str = os.getcwd()                                          # current project directory
+    csv_path: str = os.path.join(project_path, 'Jurgen_with_CFL/', 'FIG_14/') # directory where the .csv with the TOV solutions will be saved
 
     ############################################################
 
 
     ######################### DARK MATTER STUFF #########################
 
-    MF: float = 100 # fermionic mass em GeV
-    Y: int = 0      # interaction parameter for the fermionics dark matter 
+    MF: float = 100    # fermionic mass em GeV
+    Y: int = 1000      # interaction parameter for the fermionics dark matter 
 
     central_pressure_DM_L: float = 1.1e3   # smaller pressure value allowed for this EoS (m = 100, y = 0)
     central_pressure_DM_R: float = 2.9e10  # central pressure for maximum mass configuration (m = 100, y = 0)
@@ -53,8 +53,16 @@ def main() -> None:
 
     #cp_DM = 2.9e10  # 3 x 10^11  MeV/fm^3 (central density of the maximum mass configuration)
 
+    """ Fixed DM (MF = 100 GeV, Y = 1000) pressure values used by Jürgen (2016) for two-fluid stars: """
+
+    #cp_DM = 90e1  # 1 x 10^5 MeV/fm^3
+    #cp_DM = 1e5   # 1 x 10^6 MeV/fm^3
+    #cp_DM = 3e5   # 2 x 10^6 MeV/fm^3
+
     #central_pressures_DM = np.full(N_SOL, cp_DM)
     #central_pressures_DM = np.geomspace(central_pressure_DM_L, central_pressure_DM_R, 17)
+    #central_pressures_DM = np.concatenate((np.linspace(10, 5e5, 25), np.linspace(5e5, 1e7, 25)))
+    central_pressures_DM = np.geomspace(0.0013481331249417527, 1142201.5013940653, 17)
 
     #####################################################################
 
@@ -67,10 +75,12 @@ def main() -> None:
 
     #cp_BM = 173  # 606.4 MeV/fm^3
     #cp_BM = 1100 # 3095.6 MeV/fm^3
+    #cp_BM = 2500  # 7034.6 MeV/fm^3
     
     #central_pressures_BM = np.full(N_SOL, cp_BM)
-    #central_pressures_BM = np.linspace(5, 1500, N_SOL)
-    central_pressures_BM = np.geomspace(1e-4, 1200, N_SOL) # for mixed stars with fixed DM (m = 100, y = 0)
+    #central_pressures_BM = np.linspace(5, 2150, N_SOL)
+    #central_pressures_BM = np.geomspace(1e-4, 1200, N_SOL) # for mixed stars with fixed DM (m = 100, y = 0)
+    central_pressures_BM = np.linspace(1e-9, 8000, N_SOL)
       
     #########################################################################
 
@@ -85,10 +95,16 @@ def main() -> None:
 
 
     """ Creates two-fluid stars with fixed fraction of dark matter """       
-    #two_fluid_stars = create_stars_with_fixed_DM(central_pressures_BM, chi, fac, central_pressure_DM_L, central_pressure_DM_R)
+    #two_fluid_stars: pd.DataFrame = create_stars_with_fixed_DM(central_pressures_BM, chi, fac, central_pressure_DM_L, central_pressure_DM_R)
 
-    #two_fluid_stars.to_csv(csv_path)
 
+    two_fluid_stars: pd.DataFrame = create_mixed_stars_with_max_mass(central_pressures_DM, central_pressures_BM, fac, N_SOL)
+
+    two_fluid_stars.to_csv(csv_path + f'FDM_m100_y{Y}_CFL_B70_max_masses.csv')
+
+    plot_max_total_mass(two_fluid_stars, os.path.join(project_path, 'Jurgen_with_CFL/', 'FIG_14.png'))
+
+    """
     list_of_dfs = []
 
     for chi in np.linspace(0.02, 0.98, 40):
@@ -113,7 +129,7 @@ def main() -> None:
     max_solutions.reset_index(drop=True, inplace=True)
 
     max_solutions.to_csv(csv_path + 'solution.csv')
-
+    """
     
     end: float = time.time()
     print('Mixed stars created!')
@@ -132,9 +148,58 @@ def create_mixed_stars(central_pressures_DM: Array, central_pressures_BM: Array,
     
     print(two_fluid_stars)
 
-    #two_fluid_stars = two_fluid_stars[ two_fluid_stars['central_density_1'] < 3.25e11 ]
+    two_fluid_stars = two_fluid_stars[ two_fluid_stars['central_density_1'] < 1.5e7 ]
 
     return two_fluid_stars
+
+
+def create_mixed_stars_with_max_mass(central_pressures_DM: Array, central_pressures_BM: Array, 
+                        fac: TwoFluidStarFactory, N_SOL: int) -> pd.DataFrame:
+
+    list_of_dfs = []
+
+    for p0_DM in central_pressures_DM:
+
+        fixed_central_pressures_DM = np.full(N_SOL, p0_DM)
+
+        two_fluid_stars: pd.DataFrame = create_two_fluid_stellar_family(fac, fixed_central_pressures_DM, central_pressures_BM)
+
+        two_fluid_stars["mass_1"] = two_fluid_stars["mass_1"] / cf.M_SUN_IN_KM
+        two_fluid_stars["mass_2"] = two_fluid_stars["mass_2"] / cf.M_SUN_IN_KM
+
+        max_mass = two_fluid_stars[two_fluid_stars['mass_2'] == two_fluid_stars['mass_2'].max()]
+
+        max_mass["total_mass"] = max_mass["mass_1"] + max_mass["mass_2"]
+
+        max_mass["DM_fraction"] = max_mass["mass_1"] / max_mass["total_mass"]
+
+        list_of_dfs.append(max_mass)
+
+
+    max_masses: pd.DataFrame = pd.concat(list_of_dfs)
+    max_masses.reset_index(drop=True, inplace=True)
+
+    print(max_masses)
+
+    return max_masses
+
+
+def plot_max_total_mass(max_masses: pd.DataFrame, path: str):
+
+    x = max_masses["DM_fraction"]
+    y = max_masses["total_mass"] 
+
+    m, b = np.polyfit(x, y, 1)
+
+    plt.scatter(x, y, color="black", marker='s')
+
+    plt.plot(x, m * x + b, color='red', linestyle='solid', label=f'y = {m:.2f}x + {b:.2f}')
+
+    plt.xlabel(r"Fraction of dark matter ($M_{int}/M_{total, max}$)")
+    plt.ylabel(r"Maximum total mass $M_{total, max}$")
+    plt.legend()
+
+    plt.savefig(path)
 
 
 if __name__ == '__main__':

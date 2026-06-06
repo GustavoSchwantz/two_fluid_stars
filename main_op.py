@@ -8,6 +8,7 @@ from neutron_stars_computer.equationsofstate.cfl import CFL
 from neutron_stars_computer.figures_two_fluid.eos_plotter import plot_eos
 from neutron_stars_computer.figures_two_fluid.solution_plotter import plot_solution
 import neutron_stars_computer.star.conversionfactors as cf
+from neutron_stars_computer.equationsofstate.pQCD import PQCD
 
 import time
 import numpy as np
@@ -32,15 +33,9 @@ def main() -> None:
         '/home/gustavo/Quarks/test/FDM_m1_y0_geom_5e-3_1e4_300.csv')"""
 
     #"""
-    plot_eos([MasslessMITBM(60), MasslessMITBM(90),
-                RIPEOS('./neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m1_y0.csv'),
-                RIPEOS('./neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m0.5_y0.csv'),
-                RIPEOS('./neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/f_dm_m2_y0.csv'),
-                CFL(70), MasslessMITBM()], 
-                ['MIT60', 'MIT90', 'FF1', 'FF0.5', 'FF2', 'CFL', 'MIT57'],
-                ['--', ':', '--', '-', ':', '-', '--'],
-                ['red', 'green', 'cyan', 'blue', 'magenta', 'black', 'orange'],
-                np.geomspace(1e-1, 1e4, 100), (1e0, 1e5), (1e-1, 1e4), 4, '/home/gustavo/Quarks//Huang_2026/Figure_1_v2.png')
+    plot_eos([PQCD(X = 2)], ['X = 2'], ['--'], ['green'], 
+        np.linspace(1e-4, 1e1, 100), (1e-2, 1e1), (1e-4, 1e1), 4, 
+        '/home/gustavo/Quarks/test.png')
     #"""
     
     labels: list[str] = ['CFL', 'MIT60', 'FF1', 'MIT90']
