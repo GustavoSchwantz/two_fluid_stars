@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 
-def table_maker(MF: float, Y: float) -> None:
+def FDM_table_maker(MF: float, Y: float) -> None:
     eos: EquationOfState = FermionicDarkMatter(MF, Y)
 
     data_list = []
