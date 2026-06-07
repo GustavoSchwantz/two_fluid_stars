@@ -23,21 +23,21 @@ def main() -> None:
 
     ######################### PREAMBLE #########################
 
-    N_SOL: int = 58 # number of times that the TOV equations will solved
+    N_SOL: int = 50 # number of times that the TOV equations will solved
 
     CHI: float = 0.1                              # fraction of dark matter in a two-fluid star
     CHIS: list[float] = [0.1, 0.3, 0.5, 0.7, 0.9] # fractions of dark matter in a two-fluid star
 
     project_path: str = os.getcwd()                                          # current project directory
-    csv_path: str = os.path.join(project_path, 'Jurgen_with_CFL/', 'FIG_14/') # directory where the .csv with the TOV solutions will be saved
+    csv_path: str = os.path.join(project_path, 'Jurgen_with_CFL/', '') # directory where the .csv with the TOV solutions will be saved
 
     ############################################################
 
 
     ######################### DARK MATTER STUFF #########################
 
-    MF: float = 100    # fermionic mass em GeV
-    Y: int = 1000      # interaction parameter for the fermionics dark matter 
+    MF: float = 1    # fermionic mass em GeV
+    Y: int = 1000    # interaction parameter for the fermionics dark matter 
 
     central_pressure_DM_L: float = 1.1e3   # smaller pressure value allowed for this EoS (m = 100, y = 0)
     central_pressure_DM_R: float = 2.9e10  # central pressure for maximum mass configuration (m = 100, y = 0)
@@ -62,7 +62,8 @@ def main() -> None:
     #central_pressures_DM = np.full(N_SOL, cp_DM)
     #central_pressures_DM = np.geomspace(central_pressure_DM_L, central_pressure_DM_R, 17)
     #central_pressures_DM = np.concatenate((np.linspace(10, 5e5, 25), np.linspace(5e5, 1e7, 25)))
-    central_pressures_DM = np.geomspace(0.0013481331249417527, 1142201.5013940653, 17)
+    #central_pressures_DM = np.geomspace(0.0013481331249417527, 1142201.5013940653, 17)
+    central_pressures_DM = np.concatenate((np.linspace(0.1, 200, 25), np.linspace(200, 400, 25)))
 
     #####################################################################
 
@@ -73,14 +74,14 @@ def main() -> None:
 
     eos_BM: EquationOfState = CFL(BAG_PRESS)
 
-    #cp_BM = 173  # 606.4 MeV/fm^3
+    cp_BM = 173  # 606.4 MeV/fm^3
     #cp_BM = 1100 # 3095.6 MeV/fm^3
     #cp_BM = 2500  # 7034.6 MeV/fm^3
     
-    #central_pressures_BM = np.full(N_SOL, cp_BM)
+    central_pressures_BM = np.full(N_SOL, cp_BM)
     #central_pressures_BM = np.linspace(5, 2150, N_SOL)
     #central_pressures_BM = np.geomspace(1e-4, 1200, N_SOL) # for mixed stars with fixed DM (m = 100, y = 0)
-    central_pressures_BM = np.linspace(1e-9, 8000, N_SOL)
+    #central_pressures_BM = np.linspace(1e-9, 8000, N_SOL)
       
     #########################################################################
 
@@ -98,11 +99,11 @@ def main() -> None:
     #two_fluid_stars: pd.DataFrame = create_stars_with_fixed_DM(central_pressures_BM, chi, fac, central_pressure_DM_L, central_pressure_DM_R)
 
 
-    two_fluid_stars: pd.DataFrame = create_mixed_stars_with_max_mass(central_pressures_DM, central_pressures_BM, fac, N_SOL)
+    #two_fluid_stars: pd.DataFrame = create_mixed_stars_with_max_mass(central_pressures_DM, central_pressures_BM, fac, N_SOL)
 
-    two_fluid_stars.to_csv(csv_path + f'FDM_m100_y{Y}_CFL_B70_max_masses.csv')
+    #two_fluid_stars.to_csv(csv_path + f'FDM_m{MF}_y{Y}_CFL_B70_{cp_BM}.csv')
 
-    plot_max_total_mass(two_fluid_stars, os.path.join(project_path, 'Jurgen_with_CFL/', 'FIG_14.png'))
+    #plot_max_total_mass(two_fluid_stars, os.path.join(project_path, 'Jurgen_with_CFL/', 'FIG_14.png'))
 
     """
     list_of_dfs = []

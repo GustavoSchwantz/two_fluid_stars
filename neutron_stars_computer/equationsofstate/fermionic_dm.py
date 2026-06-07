@@ -7,13 +7,14 @@ from .eos import EquationOfState
 
 @dataclass(slots=True, frozen=True)
 class FermionicDarkMatter(EquationOfState):
-    MF: float = 1 
+    MF: float = 1
+    Y: float = 0 
 
     def energy_density_from(self, pressure: float) -> float:
         pass
 
     def energy_density(self, z: float) -> float:
-        return ( self.MF**4 / (8*pi**2) ) * ( (2*z**3 + z)*sqrt(1 + z**2) - asinh(z))
+        return ( self.MF**4 / (8*pi**2) ) * ( (2*z**3 + z)*sqrt(1 + z**2) - asinh(z)) + self.MF**4 * (1/(3*pi**2)*self.Y*z**3)**2 
 
     def pressure(self, z: float) -> float:
-        return ( self.MF**4 / (24*pi**2) ) * ( (2*z**3 - 3*z)*sqrt(1 + z**2) + 3*asinh(z))    
+        return ( self.MF**4 / (24*pi**2) ) * ( (2*z**3 - 3*z)*sqrt(1 + z**2) + 3*asinh(z)) + self.MF**4 * (1/(3*pi**2)*self.Y*z**3)**2    
