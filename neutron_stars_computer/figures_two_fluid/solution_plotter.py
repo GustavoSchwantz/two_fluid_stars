@@ -27,9 +27,8 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
 	else:
 
 		for csv_file, label, color, marker in zip(csv_files, labels, colors, markers):
-			df: pd.DataFrame = pd.read_csv(csv_file)
-			df.assign(central_density=df['central_density_1'] + df['central_density_2']).plot(x, y, xlim=xlim, ylim=ylim, ax=ax,
-				label=label, linestyle=marker, color=color, kind=kind, linewidth=3, logx=True)
+			pd.read_csv(csv_file).plot(x, y, xlim=xlim, ylim=ylim, ax=ax,
+				label=label, linestyle=marker, color=color, kind=kind, linewidth=2)
     
 	
 	#ax.xaxis.set_major_locator(ticker.MultipleLocator(2e11))

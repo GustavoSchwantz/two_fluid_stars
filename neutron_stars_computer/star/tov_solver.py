@@ -109,8 +109,8 @@ def solve_tov(tov_input: TOVInput, central_pressure: float) -> Any:
         events=(boundary_event, *tov_input.events)
     )
 
-    print(tov_integration.t)
-    print(tov_integration.t.size)
+    #print(tov_integration.t)
+    #print(tov_integration.t.size)
 
     def check_integration_validity(success: bool, status: int) -> None:
         if not success:

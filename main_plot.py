@@ -27,28 +27,28 @@ def main() -> None:
 	project_path: str = os.getcwd()  # current project directory
 	tables_folder: str = os.path.join(project_path, 
 	                        'neutron_stars_computer/equationsofstate/tabulated_eos/')  # directory where the tables are stored
-	input_folder: str = os.path.join(project_path, '')  # directory where the .csv files with the TOV solutions are stored
-	output_folder: str = os.path.join(project_path, 'DM_pQCD/EOS_GEVFM3.png') # path where the image will be stored
+	input_folder: str = os.path.join(project_path, 'DM_pQCD/')  # directory where the .csv files with the TOV solutions are stored
+	output_folder: str = os.path.join(project_path, 'DM_pQCD/M_x_R_X2_X3_X4.png') # path where the image will be stored
     
     ############################################################
 
 
-	"""
+	
     ################ CODE TO PLOT TOV SOLUTIONS ################
 
 	#labels: list[str] = [r'DM central density = 3 x 10$^6$ MeV/fm$^3$', r'DM central density = 3 x 10$^{10}$ MeV/fm$^3$', r'DM central density = 3 x 10$^9$ MeV/fm$^3$', r'DM central density = 3 x 10$^{11}$ MeV/fm$^3$']                     
 	#labels: list[str] = [r'$\chi = 0.1$', r'$\chi = 0.3$', r'$\chi = 0.5$', r'$\chi = 0.7$', r'$\chi = 0.9$']
 	#labels: list[str] = [r'CFL-FF100']   
-	labels: list[str] = [r'BM central density = 606.4 MeV/fm$^3$']
+	labels: list[str] = ['X = 2', 'X = 3', 'X = 4']
 	                     
 
-	markers: list[str] = ['s']
-	#markers: list[str] = ['-', '-', '-', '-', '-']
+	#markers: list[str] = ['s']
+	markers: list[str] = ['--', '-', ':']
 
-	colors: list[str] = ['black']
+	colors: list[str] = ['green', 'orange', 'gray']
 
-	x: str = 'radius_1'
-	xlim: tuple = (1000, 3000)
+	x: str = 'radius'
+	xlim: tuple = (0, 20)
 
 	#xlabel: str = r'Central Energy Density of Quark Matter (MeV/fm$^3$)'
 	#xlabel: str = r'Central Energy Density of Dark Matter (MeV/fm$^3$)'
@@ -57,8 +57,8 @@ def main() -> None:
 	xlabel: str = r'R (km)'
 
 
-	y: str = 'mass_1'
-	ylim: tuple = (0, 300)
+	y: str = 'mass'
+	ylim: tuple = (0, 3.25)
     
     #xlabel: str = r'$\chi$'
 	#ylabel: str = r'Mass of Quark Matter (Solar Masses)'
@@ -69,17 +69,17 @@ def main() -> None:
 
 
 	fontsize: str = '10'
-	loc: str = 'upper right'
+	loc: str = 'upper left'
 
 
-	kind='scatter'
+	kind='line'
 
 
 	plot_solution(x=x, y=y, input_folder=input_folder, output_folder=output_folder, labels=labels, 
         markers=markers, colors=colors, xlim=xlim, ylim=ylim, kind=kind, xlabel=xlabel, ylabel=ylabel, fontsize=fontsize, loc=loc)
     
     ############################################################
-    """
+    
 
 
     ##################### CODE TO PLOT EOS #####################
@@ -96,8 +96,8 @@ def main() -> None:
 	ylim: tuple           = (1e-4, 1e1)
 	linewidth: float      = 2
 
-	plot_eos(EOSs=EOSs, labels=labels, linestyles=linestyles, colors=colors, pressures=pressures,
-                xlim=xlim, ylim=ylim, linewidth=linewidth, path=output_folder)         
+	#plot_eos(EOSs=EOSs, labels=labels, linestyles=linestyles, colors=colors, pressures=pressures,
+    #            xlim=xlim, ylim=ylim, linewidth=linewidth, path=output_folder)         
 
     ############################################################
 
