@@ -39,7 +39,7 @@ def main() -> None:
     ######################### DARK MATTER STUFF #########################
 
     MF: float = 100  # fermionic mass em GeV
-    Y: int = 0  # interaction parameter for the fermionics dark matter 
+    Y: int = 1000  # interaction parameter for the fermionics dark matter 
 
     central_pressure_DM_L: float = 1.1e3   # smaller pressure value allowed for this EoS (m = 100, y = 0)
     central_pressure_DM_R: float = 2.9e10  # central pressure for maximum mass configuration (m = 100, y = 0)
@@ -62,9 +62,9 @@ def main() -> None:
 
     #central_pressures_DM = np.full(N_SOL, cp_DM)
     #central_pressures_DM = np.geomspace(central_pressure_DM_L, central_pressure_DM_R, 17)
-    central_pressures_DM = np.concatenate((np.linspace(2.5e8, 1.6e10, 20), np.linspace(1.6e10, 5e10, 30)))
+    #central_pressures_DM = np.concatenate((np.linspace(2.5e8, 1.6e10, 20), np.linspace(1.6e10, 5e10, 30)))
     #central_pressures_DM = np.geomspace(0.0013481331249417527, 1142201.5013940653, 17)
-    #central_pressures_DM = np.concatenate((np.linspace(0.1, 200, 25), np.linspace(200, 400, 25)))
+    central_pressures_DM = np.concatenate((np.linspace(1e2, 0.75e6, 25), np.linspace(1e6, 1e7, 25)))
 
     #####################################################################
 
@@ -80,10 +80,11 @@ def main() -> None:
     #cp_BM = 1100 # 3095.6 MeV/fm^3 (CFL)
     #cp_BM = 2500  # 7034.6 MeV/fm^3 (CFL)
     #cp_BM = 150 # 709.42 MeV/fm^3 (pQCD)
-    cp_BM = 750 # 2723.87 MeV/fm^3 (pQCD)
+    #cp_BM = 750 # 2723.87 MeV/fm^3 (pQCD)
+    cp_BM = 2000 # 6774.92 MeV/fm^3 (pQCD)
     
     central_pressures_BM = np.full(N_SOL, cp_BM)
-    #central_pressures_BM = np.linspace(5, 2150, N_SOL)
+    #central_pressures_BM = np.linspace(1e-4, 2100, N_SOL)
     #central_pressures_BM = np.linspace(1e-4, 800, N_SOL)
     #central_pressures_BM = np.linspace(1e-9, 8000, N_SOL)
       
@@ -158,7 +159,7 @@ def create_mixed_stars(central_pressures_DM: Array, central_pressures_BM: Array,
     
     print(two_fluid_stars)
 
-    two_fluid_stars = two_fluid_stars[ two_fluid_stars['central_density_1'] < 3.5e11 ]
+    two_fluid_stars = two_fluid_stars[ two_fluid_stars['central_density_1'] < 1.5e7 ]
 
     return two_fluid_stars
 

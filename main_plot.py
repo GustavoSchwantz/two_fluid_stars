@@ -28,15 +28,15 @@ def main() -> None:
 	tables_folder: str = os.path.join(project_path, 
 	                        'neutron_stars_computer/equationsofstate/tabulated_eos/')  # directory where the tables are stored
 	input_folder: str = os.path.join(project_path, 'Jurgen_with_pQCD/')  # directory where the .csv files with the TOV solutions are stored
-	output_folder: str = os.path.join(project_path, 'Jurgen_with_pQCD/FIG_7.png') # path where the image will be stored
+	output_folder: str = os.path.join(project_path, 'Jurgen_with_pQCD/FIG_12.png') # path where the image will be stored
     
     ############################################################
 
 	
     ################ CODE TO PLOT TOV SOLUTIONS ################
 
-	#labels: list[str] = [r'DM central density = 3 x 10$^6$ MeV/fm$^3$', r'DM central density = 3 x 10$^{10}$ MeV/fm$^3$']#, r'DM central density = 3 x 10$^9$ MeV/fm$^3$']#, r'DM central density = 3 x 10$^{11}$ MeV/fm$^3$']                     
-	labels: list[str] = [r'BM central density =  709.42 MeV/fm$^3$', r'BM central density =  2723.87 MeV/fm$^3$']
+	#labels: list[str] = [r'DM central density = 1 x 10$^5$ MeV/fm$^3$', r'DM central density = 2 x 10$^6$ MeV/fm$^3$']#, r'DM central density = 3 x 10$^{11}$ MeV/fm$^3$']                     
+	labels: list[str] = [r'BM central density =  709.42 MeV/fm$^3$', r'BM central density =  6774.92 MeV/fm$^3$']
 	#labels: list[str] = [r'$\chi = 0.1$', r'$\chi = 0.3$', r'$\chi = 0.5$', r'$\chi = 0.7$', r'$\chi = 0.9$']
 	#labels: list[str] = [r'CFL-FF100']   
 	#labels: list[str] = ['X = 2', 'X = 3', 'X = 4']
@@ -48,7 +48,7 @@ def main() -> None:
 	colors: list[str] = ['black', 'red']
 
 	x: str = 'central_density_1'
-	xlim: tuple = (-1e11, 5e11)
+	xlim: tuple = (-0.5e7, 2.5e7)
 	#xlim: tuple = (0, 3500)
 
 	#xlabel: str = r'Central Energy Density of Quark Matter (MeV/fm$^3$)'
@@ -60,8 +60,9 @@ def main() -> None:
 
 	y: str = 'radius_1'
 	#ylim: tuple = (2.5e-5, 6.5e-5)
-	ylim: tuple = (0.5e-3, 1.7e-3)
+	#ylim: tuple = (0.5e-3, 1.7e-3)
 	#ylim: tuple = (0, 14)
+	ylim: tuple = (0.12, 0.31)
     
     #xlabel: str = r'$\chi$'
 	#ylabel: str = r'Mass of Quark Matter (Solar Masses)'
