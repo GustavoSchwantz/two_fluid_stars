@@ -13,6 +13,7 @@ import time
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from typing import Iterable
 
 Array = np.ndarray
 
@@ -23,15 +24,15 @@ def main() -> None:
 
     ######################### PREAMBLE #########################
 
-    N_SOL: int = 60  # number of times that the TOV equations will solved
+    N_SOL: int = 400  # number of times that the TOV equations will solved
 
-    CHI: float = 0.1                              # fraction of dark matter in a two-fluid star
-    CHIS: list[float] = [0.1, 0.3, 0.5, 0.7, 0.9] # fractions of dark matter in a two-fluid star
+    CHI: float = 0.1  # fraction of dark matter in a two-fluid star
+    CHIs: list[float] = [0.1, 0.3, 0.5, 0.7, 0.9]  # fractions of dark matter in a two-fluid star
 
     project_path: str = os.getcwd()  # current project directory
     tables_folder: str = os.path.join(project_path, 
                             'neutron_stars_computer/equationsofstate/tabulated_eos/')  # directory where the tables are stored
-    csv_path: str = os.path.join(project_path, 'Jurgen_with_pQCD/') # directory where the .csv with the TOV solutions will be saved
+    csv_path: str = os.path.join(project_path, 'DM_pQCD/') # directory where the .csv with the TOV solutions will be saved
 
     ############################################################
 
@@ -41,8 +42,11 @@ def main() -> None:
     MF: float = 100  # fermionic mass em GeV
     Y: int = 1000  # interaction parameter for the fermionics dark matter 
 
-    central_pressure_DM_L: float = 1.1e3   # smaller pressure value allowed for this EoS (m = 100, y = 0)
-    central_pressure_DM_R: float = 2.9e10  # central pressure for maximum mass configuration (m = 100, y = 0)
+    #central_pressure_DM_L: float = 1.1e3   # smaller pressure value allowed for this EoS (m = 100, y = 0)
+    #central_pressure_DM_R: float = 2.9e10  # central pressure for maximum mass configuration (m = 100, y = 0)
+
+    central_pressure_DM_L: float = 1.5e3  # smaller pressure value allowed for this EoS ? (m = 100, y = 1000)
+    central_pressure_DM_R: float = 1.3e6  # central pressure for maximum mass configuration (m = 100, y = 1000)
 
     eos_DM: EquationOfState = RIPEOS(tables_folder + f'DM_EOS/f_dm_m{MF}_y{Y}.csv')
     
@@ -63,7 +67,7 @@ def main() -> None:
     #central_pressures_DM = np.full(N_SOL, cp_DM)
     #central_pressures_DM = np.geomspace(central_pressure_DM_L, central_pressure_DM_R, 17)
     #central_pressures_DM = np.concatenate((np.linspace(2.5e8, 1.6e10, 20), np.linspace(1.6e10, 5e10, 30)))
-    central_pressures_DM = np.geomspace(1e3, 3.5e5, 17)
+    #central_pressures_DM = np.geomspace(1e3, 3.5e5, 17)
     #central_pressures_DM = np.concatenate((np.linspace(1e2, 0.75e6, 25), np.linspace(1e6, 1e7, 25)))
 
     #####################################################################
@@ -72,7 +76,7 @@ def main() -> None:
     ######################### BARIONIC MATTER STUFF #########################
 
     BAG_PRESS: float = 70
-    X: float = 3
+    X: float = 2
 
     eos_BM: EquationOfState = RIPEOS(tables_folder + f'QM_EOS/pQCD_X{X}.csv')
 
@@ -84,7 +88,7 @@ def main() -> None:
     #cp_BM = 2000 # 6774.92 MeV/fm^3 (pQCD)
     
     #central_pressures_BM = np.full(N_SOL, cp_BM)
-    central_pressures_BM = np.linspace(1e-4, 2100, N_SOL)
+    central_pressures_BM = np.geomspace(1e-18, 8400, N_SOL)
     #central_pressures_BM = np.linspace(1e-4, 800, N_SOL)
     #central_pressures_BM = np.linspace(1e-9, 8000, N_SOL)
       
@@ -105,39 +109,25 @@ def main() -> None:
     """ Creates two-fluid stars with fixed fraction of dark matter """       
     #two_fluid_stars: pd.DataFrame = create_stars_with_fixed_DM(central_pressures_BM, chi, fac, central_pressure_DM_L, central_pressure_DM_R)
 
-
-    two_fluid_stars: pd.DataFrame = create_mixed_stars_with_max_mass(central_pressures_DM, central_pressures_BM, fac, N_SOL)
-
-    two_fluid_stars.to_csv(csv_path + f'FDM_m{MF}_y{Y}_pQCD_X{X}_max_masses.csv')
-
-    plot_max_total_mass(two_fluid_stars, os.path.join(project_path, 'Jurgen_with_pQCD/', 'FIG_14.png'))
-
-    """
-    list_of_dfs = []
-
-    for chi in np.linspace(0.02, 0.98, 40):
-
-        print(f'Starting to create stars with \u03C7 = {chi} ...')
-        s: float = time.time()
-
-        two_fluid_stars: pd.DataFrame = create_stars_with_fixed_DM(central_pressures_BM, chi, fac, 
-            central_pressure_DM_L, central_pressure_DM_R)
-
-        two_fluid_stars.to_csv(csv_path + f'FDM_m100_y0_CFL_B70_{chi}.csv')
-
-        max_mass_sol = two_fluid_stars[ two_fluid_stars['total_mass'] == two_fluid_stars['total_mass'].max() ]
-        list_of_dfs.append(max_mass_sol)
-
-        e: float = time.time()
-        print(f'Stars with \u03C7 = {chi} created!')
-        print(f"Time to complete: {e - s:.2f} s")
+    """ Creates two-fluid stars with maximum masses """
+    #two_fluid_stars: pd.DataFrame = create_mixed_stars_with_max_mass(central_pressures_DM, central_pressures_BM, fac, N_SOL)
 
 
-    max_solutions = pd.concat(list_of_dfs)    
-    max_solutions.reset_index(drop=True, inplace=True)
+    list_of_two_fluid_stars: Iterable[pd.DataFrame] = create_stars_for_various_chis(central_pressures_BM, CHIs, fac, 
+                                                                                        central_pressure_DM_L, central_pressure_DM_R)
 
-    max_solutions.to_csv(csv_path + 'solution.csv')
-    """
+
+    ############################################################
+
+
+    ####################### SAVE OR PLOT ######################             
+    
+    #two_fluid_stars.to_csv(csv_path + f'FDM_m{MF}_y{Y}_pQCD_X{X}_max_masses.csv')
+
+    #plot_max_total_mass(two_fluid_stars, os.path.join(project_path, 'Jurgen_with_pQCD/', 'FIG_14.png'))
+
+    for two_fluid_stars, chi in zip(list_of_two_fluid_stars, CHIs):
+        two_fluid_stars.to_csv(csv_path + f'FDM_m{MF}_y{Y}_pQCD_X{X}_chi{chi}.csv')
 
     ############################################################
 
@@ -195,7 +185,7 @@ def create_mixed_stars_with_max_mass(central_pressures_DM: Array, central_pressu
     return max_masses
 
 
-def plot_max_total_mass(max_masses: pd.DataFrame, path: str):
+def plot_max_total_mass(max_masses: pd.DataFrame, path: str) -> None:
 
     x = max_masses["DM_fraction"]
     y = max_masses["total_mass"] 
@@ -211,6 +201,27 @@ def plot_max_total_mass(max_masses: pd.DataFrame, path: str):
     plt.legend()
 
     plt.savefig(path)
+
+
+def create_stars_for_various_chis(central_pressures_BM: Iterable[float], CHIs: Iterable[float], fac: TwoFluidStarFactory,
+                                    cp_DM_L: float, cp_DM_R: float) -> Iterable[pd.DataFrame]: 
+    
+    list_of_dfs = []
+
+    for chi in CHIs:
+
+        print(f'Creating stars with \u03C7 = {chi} ...')
+        start: float = time.time()
+
+        two_fluid_stars: pd.DataFrame = create_stars_with_fixed_DM(central_pressures_BM, chi, fac, cp_DM_L, cp_DM_R)
+
+        list_of_dfs.append(two_fluid_stars)
+
+        end: float = time.time()
+        print(f'Stars with \u03C7 = {chi} created in {end - start:.2f} s')
+
+
+    return list_of_dfs
 
 
 if __name__ == '__main__':
