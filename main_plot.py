@@ -28,7 +28,7 @@ def main() -> None:
 	tables_folder: str = os.path.join(project_path, 
 	                        'neutron_stars_computer/equationsofstate/tabulated_eos/')  # directory where the tables are stored
 	input_folder: str = os.path.join(project_path, 'DM_pQCD/')  # directory where the .csv files with the TOV solutions are stored
-	output_folder: str = os.path.join(project_path, 'DM_pQCD/FDM_m100_y1000_pQCD_X2.png') # path where the image will be stored
+	output_folder: str = os.path.join(project_path, 'DM_pQCD/FDM_m100_y1000_pQCD_X3.png') # path where the image will be stored
     
     ############################################################
 
@@ -37,18 +37,18 @@ def main() -> None:
 
 	#labels: list[str] = [r'DM central density = 1 x 10$^5$ MeV/fm$^3$', r'DM central density = 2 x 10$^6$ MeV/fm$^3$']#, r'DM central density = 3 x 10$^{11}$ MeV/fm$^3$']                     
 	#labels: list[str] = [r'BM central density =  709.42 MeV/fm$^3$', r'BM central density =  6774.92 MeV/fm$^3$']
-	labels: list[str] = [r'$\chi = 0.1$', r'$\chi = 0.3$', r'$\chi = 0.5$', r'$\chi = 0.7$', r'$\chi = 0.9$']
+	labels: list[str] = [r'$\chi = 0$', r'$\chi = 0.01$', r'$\chi = 0.02$', r'$\chi = 0.1$']#, r'$\chi = 0.3$', r'$\chi = 0.5$', r'$\chi = 0.7$', r'$\chi = 0.9$']
 	#labels: list[str] = [r'CFL-FF100']   
 	#labels: list[str] = ['X = 2', 'X = 3', 'X = 4']
 	                     
 
 	#markers: list[str] = ['s']
-	markers: list[str] = ['--', '-', ':', '--', '-']
+	markers: list[str] = ['-', '-', '-', '-']#, ':', '--', '-']
 
-	colors: list[str] = ['black', 'red', 'blue', 'orange', 'green']
+	colors: list[str] = ['black', 'gray', 'brown', 'red']#, 'blue', 'orange', 'green']
 
 	x: str = 'radius'
-	xlim: tuple = (0, 5)
+	xlim: tuple = (0, 15)
 	#xlim: tuple = (0, 3500)
 
 	#xlabel: str = r'Central Energy Density of Quark Matter (MeV/fm$^3$)'
@@ -62,7 +62,7 @@ def main() -> None:
 	#ylim: tuple = (2.5e-5, 6.5e-5)
 	#ylim: tuple = (0.5e-3, 1.7e-3)
 	#ylim: tuple = (0, 14)
-	ylim: tuple = (0, 0.3)
+	ylim: tuple = (0, 2.5)
     
     #xlabel: str = r'$\chi$'
 	#ylabel: str = r'Mass of Quark Matter (Solar Masses)'

@@ -24,10 +24,10 @@ def main() -> None:
 
     ######################### PREAMBLE #########################
 
-    N_SOL: int = 400  # number of times that the TOV equations will solved
+    N_SOL: int = 200  # number of times that the TOV equations will solved
 
     CHI: float = 0.1  # fraction of dark matter in a two-fluid star
-    CHIs: list[float] = [0.1, 0.3, 0.5, 0.7, 0.9]  # fractions of dark matter in a two-fluid star
+    CHIs: list[float] = [0.1]  # fractions of dark matter in a two-fluid star
 
     project_path: str = os.getcwd()  # current project directory
     tables_folder: str = os.path.join(project_path, 
@@ -45,7 +45,7 @@ def main() -> None:
     #central_pressure_DM_L: float = 1.1e3   # smaller pressure value allowed for this EoS (m = 100, y = 0)
     #central_pressure_DM_R: float = 2.9e10  # central pressure for maximum mass configuration (m = 100, y = 0)
 
-    central_pressure_DM_L: float = 1.5e3  # smaller pressure value allowed for this EoS ? (m = 100, y = 1000)
+    central_pressure_DM_L: float = 1e2  # smaller pressure value allowed for this EoS ? (m = 100, y = 1000)
     central_pressure_DM_R: float = 1.3e6  # central pressure for maximum mass configuration (m = 100, y = 1000)
 
     eos_DM: EquationOfState = RIPEOS(tables_folder + f'DM_EOS/f_dm_m{MF}_y{Y}.csv')
@@ -76,7 +76,7 @@ def main() -> None:
     ######################### BARIONIC MATTER STUFF #########################
 
     BAG_PRESS: float = 70
-    X: float = 2
+    X: float = 3
 
     eos_BM: EquationOfState = RIPEOS(tables_folder + f'QM_EOS/pQCD_X{X}.csv')
 
@@ -88,7 +88,7 @@ def main() -> None:
     #cp_BM = 2000 # 6774.92 MeV/fm^3 (pQCD)
     
     #central_pressures_BM = np.full(N_SOL, cp_BM)
-    central_pressures_BM = np.geomspace(1e-18, 8400, N_SOL)
+    central_pressures_BM = np.geomspace(1e-9, 2150, N_SOL)
     #central_pressures_BM = np.linspace(1e-4, 800, N_SOL)
     #central_pressures_BM = np.linspace(1e-9, 8000, N_SOL)
       
