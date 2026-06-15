@@ -36,7 +36,7 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
 	
 	#ax.xaxis.set_major_locator(ticker.MultipleLocator(2e11))
 	#ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
-
+	"""
 	legend_elements = [
     	Line2D([0], [0], color='red', lw=9, label='CFL', linestyle=':'),
     	Line2D([0], [0], color='green', lw=9, label='MIT57', linestyle=':'),
@@ -54,9 +54,10 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
     ]
 
 	ax.legend(handles=legend_elements, fontsize=10.5, loc='lower right')
+	"""
 
 	plt.xlabel(xlabel)
 	plt.ylabel(ylabel)
-	#plt.legend(fontsize=fontsize, loc=loc)
+	plt.legend(fontsize=fontsize, loc=loc)
 
 	plt.savefig(output_folder)   

@@ -27,54 +27,55 @@ def main() -> None:
 	project_path: str = os.getcwd()  # current project directory
 	tables_folder: str = os.path.join(project_path, 
 	                        'neutron_stars_computer/equationsofstate/tabulated_eos/')  # directory where the tables are stored
-	input_folder: str = os.path.join(project_path, 'poster/Mq_X_E0q')  # directory where the .csv files with the TOV solutions are stored
-	output_folder: str = os.path.join(project_path, 'poster/Mq_X_E0q_v3.pdf') # path where the image will be stored
+	input_folder: str = os.path.join(project_path, 'poster/Mmax_X_chi')  # directory where the .csv files with the TOV solutions are stored
+	output_folder: str = os.path.join(project_path, 'poster/Mmax_X_chi.png') # path where the image will be stored
     
     ############################################################
 
 	
     ################ CODE TO PLOT TOV SOLUTIONS ################
 
-	labels: list[str] = ['', '', '', r'DM central density = 1 x 10$^5$ MeV/fm$^3$', r'DM central density = 1 x 10$^6$ MeV/fm$^3$', r'DM central density = 2 x 10$^6$ MeV/fm$^3$',
-	                        r'', r'DM central density = 1 x 10$^6$ MeV/fm$^3$', r'DM central density = 2 x 10$^6$ MeV/fm$^3$']                    
+	#labels: list[str] = ['', '', '', r'DM central density = 1 x 10$^5$ MeV/fm$^3$', r'DM central density = 1 x 10$^6$ MeV/fm$^3$', r'DM central density = 2 x 10$^6$ MeV/fm$^3$',
+	#                        r'', r'DM central density = 1 x 10$^6$ MeV/fm$^3$', r'DM central density = 2 x 10$^6$ MeV/fm$^3$']                    
 	#labels: list[str] = [r'BM central density =  709.42 MeV/fm$^3$', r'BM central density =  6774.92 MeV/fm$^3$']
 	#labels: list[str] = [r'$\chi = 0$', r'$\chi = 0.1$', r'$\chi = 0.3$', r'$\chi = 0.5$', r'$\chi = 0.7$', r'$\chi = 0.9$']
-	#labels: list[str] = [r'CFL-FF100']   
+	labels: list[str] = [r'CFL70']   
 	#labels: list[str] = ['X = 2', 'X = 3', 'X = 4']
 	                     
 
-	#markers: list[str] = ['s']
-	markers: list[str] = ['-', ':', '--', '-', ':', '--', ':', '--', '-']
+	markers: list[str] = ['--']
+	#markers: list[str] = ['-', ':', '--', '-', ':', '--', ':', '--', '-']
 
-	colors: list[str] = ['red', 'red', 'red', 'blue', 'blue', 'blue', 'green', 'green', 'green']
+	#colors: list[str] = ['red', 'red', 'red', 'blue', 'blue', 'blue', 'green', 'green', 'green']
+	colors: list[str] = ['red']
 
-	x: str = 'central_density_2'
-	xlim: tuple = (0, 6000)
+	x: str = 'chi'
+	xlim: tuple = (0, 1)
 	#xlim: tuple = (0, 3500)
 
-	xlabel: str = r'Central Energy Density of Quark Matter (MeV/fm$^3$)'
+	#xlabel: str = r'Central Energy Density of Quark Matter (MeV/fm$^3$)'
 	#xlabel: str = r'Central Energy Density of Dark Matter (MeV/fm$^3$)'
 	#xlabel: str = r'Central Energy Density (MeV/fm$^3$)'
-	#xlabel: str = r'$\chi$'
+	xlabel: str = r'$\chi$'
 	#xlabel: str = r'R (km)'
 
 
-	y: str = 'mass_2'
+	y: str = 'max_mass'
 	#ylim: tuple = (2.5e-5, 6.5e-5)
 	#ylim: tuple = (0.5e-3, 1.7e-3)
 	#ylim: tuple = (0, 14)
-	ylim: tuple = (0, 3.25)
+	ylim: tuple = (0, 3)
     
     #xlabel: str = r'$\chi$'
-	ylabel: str = r'Mass of Quark Matter (Solar Mass)'
+	#ylabel: str = r'Mass of Quark Matter (Solar Mass)'
 	#ylabel: str = r'Mass of Dark Matter (Solar Masses)'
 	#ylabel: str = r'Radius of Quark Matter (km)'
 	#ylabel: str = r'Radius of Dark Matter (km)'
-	#ylabel: str = r'M ($M_{\odot}$)'
+	ylabel: str = r'M ($M_{\odot}$)'
 
 
 	fontsize: str = '10.5'
-	loc: str = 'lower right'
+	loc: str = 'upper right'
 
 
 	kind='line'

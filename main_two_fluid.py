@@ -115,8 +115,23 @@ def main() -> None:
     #two_fluid_stars: pd.DataFrame = create_mixed_stars_with_max_mass(central_pressures_DM, central_pressures_BM, fac, N_SOL)
 
 
-    list_of_two_fluid_stars: Iterable[pd.DataFrame] = create_stars_for_various_chis(central_pressures_BM, CHIs, fac, 
-                                                                                        central_pressure_DM_L, central_pressure_DM_R)
+    #list_of_two_fluid_stars: Iterable[pd.DataFrame] = create_stars_for_various_chis(central_pressures_BM, CHIs, fac, 
+    #                                                                                    central_pressure_DM_L, central_pressure_DM_R)
+
+    list_of_dfs = []
+
+    for chi in CHIs:
+        two_fluid_stars: pd.DataFrame = pd.read_csv(csv_path + f'FDM_m{MF}_y{Y}_CFL_B{BAG_PRESS}_chi{chi}.csv')
+
+        max_total_mass: pd.DataFrame = two_fluid_stars[two_fluid_stars['total_mass'] == two_fluid_stars['total_mass'].max()]
+
+        list_of_dfs.append(max_total_mass)
+
+
+    result: pd.DataFrame = pd.concat(list_of_dfs)
+    result.reset_index(drop=True, inplace=True)
+
+    result.to_csv(csv_path + 'result.csv')
 
 
     ############################################################
@@ -128,8 +143,8 @@ def main() -> None:
 
     #plot_max_total_mass(two_fluid_stars, os.path.join(project_path, 'Jurgen_with_pQCD/', 'FIG_14.png'))
 
-    for two_fluid_stars, chi in zip(list_of_two_fluid_stars, CHIs):
-        two_fluid_stars.to_csv(csv_path + f'FDM_m{MF}_y{Y}_CFL_B{BAG_PRESS}_chi{chi}.csv')
+    #for two_fluid_stars, chi in zip(list_of_two_fluid_stars, CHIs):
+    #    two_fluid_stars.to_csv(csv_path + f'FDM_m{MF}_y{Y}_CFL_B{BAG_PRESS}_chi{chi}.csv')
 
     ############################################################
 
