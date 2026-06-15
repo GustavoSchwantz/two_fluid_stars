@@ -24,15 +24,15 @@ def main() -> None:
 
     ######################### PREAMBLE #########################
 
-    N_SOL: int = 400  # number of times that the TOV equations will solved
+    N_SOL: int = 150  # number of times that the TOV equations will solved
 
     CHI: float = 0.1  # fraction of dark matter in a two-fluid star
-    CHIs: list[float] = [0.01, 0.03, 0.05, 0.07, 0.09, 0.1, 0.3, 0.5, 0.7, 0.9]  # fractions of dark matter in a two-fluid star
+    CHIs: list[float] = np.linspace(0.02, 0.98, 40)  # fractions of dark matter in a two-fluid star
 
     project_path: str = os.getcwd()  # current project directory
     tables_folder: str = os.path.join(project_path, 
                             'neutron_stars_computer/equationsofstate/tabulated_eos/')  # directory where the tables are stored
-    csv_path: str = os.path.join(project_path, 'DM_pQCD/') # directory where the .csv with the TOV solutions will be saved
+    csv_path: str = os.path.join(project_path, 'poster/Mmax_X_chi/CFL70/') # directory where the .csv with the TOV solutions will be saved
 
     ############################################################
 
@@ -78,11 +78,13 @@ def main() -> None:
     BAG_PRESS: float = 70
     X: float = 3
 
-    eos_BM: EquationOfState = RIPEOS(tables_folder + f'QM_EOS/pQCD_X{X}.csv')
+    #eos_BM: EquationOfState = RIPEOS(tables_folder + f'QM_EOS/pQCD_X{X}.csv')
+    #eos_BM: EquationOfState = MasslessMITBM()
+    eos_BM: EquationOfState = CFL(BAG_PRESS)
 
     #cp_BM = 173  # 606.4 MeV/fm^3 (CFL)
-    #cp_BM = 1100 # 3095.6 MeV/fm^3 (CFL)
-    #cp_BM = 2500  # 7034.6 MeV/fm^3 (CFL)
+    #cp_BM = 1100 # 3095.6 MeV/fm^3 (CFL)eos_BM: EquationOfState =
+    #cp_BM = 2500  # 7034.6 MeV/fm^3 (CFL)CFL70
     #cp_BM = 150 # 709.42 MeV/fm^3 (pQCD)
     #cp_BM = 750 # 2723.87 MeV/fm^3 (pQCD)
     #cp_BM = 2000 # 6774.92 MeV/fm^3 (pQCD)
@@ -127,7 +129,7 @@ def main() -> None:
     #plot_max_total_mass(two_fluid_stars, os.path.join(project_path, 'Jurgen_with_pQCD/', 'FIG_14.png'))
 
     for two_fluid_stars, chi in zip(list_of_two_fluid_stars, CHIs):
-        two_fluid_stars.to_csv(csv_path + f'FDM_m{MF}_y{Y}_pQCD_X{X}_chi{chi}.csv')
+        two_fluid_stars.to_csv(csv_path + f'FDM_m{MF}_y{Y}_CFL_B{BAG_PRESS}_chi{chi}.csv')
 
     ############################################################
 

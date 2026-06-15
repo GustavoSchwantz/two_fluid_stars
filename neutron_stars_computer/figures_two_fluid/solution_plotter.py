@@ -19,6 +19,8 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
 
 	csv_files.sort(key=os.path.getctime)
 
+	print(csv_files)
+
 	if kind == 'scatter':
 
 	    for csv_file, label, color, marker in zip(csv_files, labels, colors, markers):
@@ -36,21 +38,22 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
 	#ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
 
 	legend_elements = [
-    	Line2D([0], [0], color='green', lw=9, label=r'DM central density = 1 x 10$^5$ MeV/fm$^3$', linestyle=':'),
-    	Line2D([0], [0], color='red', lw=9, label=r'DM central density = 1 x 10$^6$ MeV/fm$^3$', linestyle=':'),
-    	Line2D([0], [0], color='blue', lw=9, label=r'DM central density = 2 x 10$^6$ MeV/fm$^3$', linestyle=':')
+    	Line2D([0], [0], color='red', lw=9, label='CFL', linestyle=':'),
+    	Line2D([0], [0], color='green', lw=9, label='MIT57', linestyle=':'),
+    	Line2D([0], [0], color='blue', lw=9, label='pQCD', linestyle=':')
     ]
 
-	legend1 = ax.legend(handles=legend_elements, fontsize=fontsize)
+	legend1 = ax.legend(handles=legend_elements, fontsize=fontsize, loc='upper right')
 
 	ax.add_artist(legend1)
 
 	legend_elements = [
-    	Line2D([0], [0], color='black', lw=3, label='CFL', linestyle=':'),
-    	Line2D([0], [0], color='black', lw=2, label='pQCD', linestyle='--')
+	    Line2D([0], [0], color='black', lw=3, label=r'DM central density = 1 x 10$^5$ MeV/fm$^3$', linestyle='-'),
+    	Line2D([0], [0], color='black', lw=3, label=r'DM central density = 1 x 10$^6$ MeV/fm$^3$', linestyle=':'),
+    	Line2D([0], [0], color='black', lw=2, label=r'DM central density = 2 x 10$^6$ MeV/fm$^3$', linestyle='--')
     ]
 
-	ax.legend(handles=legend_elements, loc='upper right')
+	ax.legend(handles=legend_elements, fontsize=10.5, loc='lower right')
 
 	plt.xlabel(xlabel)
 	plt.ylabel(ylabel)
