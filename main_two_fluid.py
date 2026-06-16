@@ -32,7 +32,7 @@ def main() -> None:
     project_path: str = os.getcwd()  # current project directory
     tables_folder: str = os.path.join(project_path, 
                             'neutron_stars_computer/equationsofstate/tabulated_eos/')  # directory where the tables are stored
-    csv_path: str = os.path.join(project_path, 'poster/Mmax_X_chi/CFL70/') # directory where the .csv with the TOV solutions will be saved
+    csv_path: str = os.path.join(project_path, 'poster/Mmax_X_chi/MIT57/') # directory where the .csv with the TOV solutions will be saved
 
     ############################################################
 
@@ -121,7 +121,7 @@ def main() -> None:
     list_of_dfs = []
 
     for chi in CHIs:
-        two_fluid_stars: pd.DataFrame = pd.read_csv(csv_path + f'FDM_m{MF}_y{Y}_CFL_B{BAG_PRESS}_chi{chi}.csv')
+        two_fluid_stars: pd.DataFrame = pd.read_csv(csv_path + f'FDM_m{MF}_y{Y}_MIT_B{BAG_PRESS}_chi{chi}.csv')
 
         max_total_mass: pd.DataFrame = two_fluid_stars[two_fluid_stars['total_mass'] == two_fluid_stars['total_mass'].max()]
 

@@ -43,18 +43,19 @@ def plot_solution(x: str, y: str, input_folder: str, output_folder: str, labels:
     	Line2D([0], [0], color='blue', lw=9, label='pQCD', linestyle=':')
     ]
 
-	legend1 = ax.legend(handles=legend_elements, fontsize=fontsize, loc='upper right')
+	legend1 = ax.legend(handles=legend_elements, fontsize=fontsize, loc='center right')
 
 	ax.add_artist(legend1)
 
 	legend_elements = [
-	    Line2D([0], [0], color='black', lw=3, label=r'DM central density = 1 x 10$^5$ MeV/fm$^3$', linestyle='-'),
-    	Line2D([0], [0], color='black', lw=3, label=r'DM central density = 1 x 10$^6$ MeV/fm$^3$', linestyle=':'),
-    	Line2D([0], [0], color='black', lw=2, label=r'DM central density = 2 x 10$^6$ MeV/fm$^3$', linestyle='--')
+	    Line2D([0], [0], color='black', lw=3, label=r'QM central density = 600 MeV/fm$^3$', linestyle='-'),
+    	Line2D([0], [0], color='black', lw=2, label=r'QM central density = 709.42 MeV/fm$^3$', linestyle='--'),
+    	Line2D([0], [0], color='black', lw=3, label=r'QM central density = 7034.6 MeV/fm$^3$', linestyle=':')
     ]
 
-	ax.legend(handles=legend_elements, fontsize=10.5, loc='lower right')
+	ax.legend(handles=legend_elements, fontsize=10.5, loc='upper right')
 	"""
+	
 
 	plt.xlabel(xlabel)
 	plt.ylabel(ylabel)

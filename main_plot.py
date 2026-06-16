@@ -39,15 +39,16 @@ def main() -> None:
 	#                        r'', r'DM central density = 1 x 10$^6$ MeV/fm$^3$', r'DM central density = 2 x 10$^6$ MeV/fm$^3$']                    
 	#labels: list[str] = [r'BM central density =  709.42 MeV/fm$^3$', r'BM central density =  6774.92 MeV/fm$^3$']
 	#labels: list[str] = [r'$\chi = 0$', r'$\chi = 0.1$', r'$\chi = 0.3$', r'$\chi = 0.5$', r'$\chi = 0.7$', r'$\chi = 0.9$']
-	labels: list[str] = [r'CFL70']   
+	#labels: list[str] = [r'CFL70']   
 	#labels: list[str] = ['X = 2', 'X = 3', 'X = 4']
+	labels: list[str] = ['', '']
 	                     
 
-	markers: list[str] = ['--']
+	markers: list[str] = ['-.', '--']
 	#markers: list[str] = ['-', ':', '--', '-', ':', '--', ':', '--', '-']
 
 	#colors: list[str] = ['red', 'red', 'red', 'blue', 'blue', 'blue', 'green', 'green', 'green']
-	colors: list[str] = ['red']
+	colors: list[str] = ['red', 'green']
 
 	x: str = 'chi'
 	xlim: tuple = (0, 1)
@@ -64,7 +65,7 @@ def main() -> None:
 	#ylim: tuple = (2.5e-5, 6.5e-5)
 	#ylim: tuple = (0.5e-3, 1.7e-3)
 	#ylim: tuple = (0, 14)
-	ylim: tuple = (0, 3)
+	ylim: tuple = (0, 0.6)
     
     #xlabel: str = r'$\chi$'
 	#ylabel: str = r'Mass of Quark Matter (Solar Mass)'
