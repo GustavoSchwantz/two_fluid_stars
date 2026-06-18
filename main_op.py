@@ -50,6 +50,7 @@ def main() -> None:
     #pQCD_table_maker(X=2)
     #pQCD_table_maker(X=3)
     #pQCD_table_maker(X=4)
+    FDM_table_maker(MF=30, Y=1000)
 
     ############################################################
 
@@ -59,11 +60,11 @@ def main() -> None:
     tov_input: TOVInput = TOVInput(eos)
     fac: StarFactory = StarFactory(tov_input)
 
-    stars: pd.DataFrame = create_stars(central_pressures, fac)
+    #stars: pd.DataFrame = create_stars(central_pressures, fac)
 
-    print(stars)
+    #print(stars)
 
-    stars.to_csv(csv_path)
+    #stars.to_csv(csv_path)
 
     ############################################################
 
