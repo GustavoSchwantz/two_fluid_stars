@@ -25,6 +25,24 @@ def FDM_table_maker(MF: float, Y: float) -> None:
 	                        index = False, sep = ' ', float_format = '%.5e')
 
 
+def dimensionless_FDM_table_maker(MF: float, Y: float) -> None:
+    eos: EquationOfState = FermionicDarkMatter(MF, Y)
+
+    data_list = []
+
+    for z in np.geomspace(1e-3, 1e3, 200):
+	    e = eos.energy_density(z) / MF**4
+	    p = eos.pressure(z) / MF**4
+
+	    data_list.append({'e': e, 'p': p})
+
+
+    tabulated_eos = pd.DataFrame(data_list)
+
+    tabulated_eos.to_csv(f'/home/gustavo/Quarks/neutron_stars_computer/equationsofstate/tabulated_eos/DM_EOS/dimesionless_f_dm_m_y{Y}.csv',
+	                        index = False, sep = ' ', float_format = '%.5e')
+
+
 def pQCD_table_maker(X: float) -> None:
     eos: EquationOfState = PQCD(X=X)
 

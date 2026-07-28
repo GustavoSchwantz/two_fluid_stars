@@ -8,6 +8,7 @@ from neutron_stars_computer.equationsofstate.cfl import CFL
 import neutron_stars_computer.star.conversionfactors as cf
 from neutron_stars_computer.figures_two_fluid.solution_plotter import plot_solution
 from neutron_stars_computer.figures_two_fluid.eos_plotter import plot_eos
+from neutron_stars_computer.equationsofstate.tabulated_eos_maker import dimensionless_FDM_table_maker
 
 import os
 import time
@@ -28,7 +29,7 @@ def main() -> None:
 	tables_folder: str = os.path.join(project_path, 
 	                        'neutron_stars_computer/equationsofstate/tabulated_eos/')  # directory where the tables are stored
 	input_folder: str = os.path.join(project_path, 'poster/Mq_X_E0q/')  # directory where the .csv files with the TOV solutions are stored
-	output_folder: str = os.path.join(project_path, 'poster/imgs_vfinal/Rq_X_E0q.pdf') # path where the image will be stored
+	output_folder: str = os.path.join(project_path, 'dimensionless_DM_EOS.png') # path where the image will be stored
     
     ############################################################
 
@@ -89,8 +90,8 @@ def main() -> None:
 	kind='line'
 
 
-	plot_solution(x=x, y=y, input_folder=input_folder, output_folder=output_folder, labels=labels, 
-        markers=markers, colors=colors, xlim=xlim, ylim=ylim, kind=kind, xlabel=xlabel, ylabel=ylabel, fontsize=fontsize, loc=loc, MFs=MFs)
+	#plot_solution(x=x, y=y, input_folder=input_folder, output_folder=output_folder, labels=labels, 
+    #    markers=markers, colors=colors, xlim=xlim, ylim=ylim, kind=kind, xlabel=xlabel, ylabel=ylabel, fontsize=fontsize, loc=loc, MFs=MFs)
     
     ############################################################
     
@@ -98,20 +99,25 @@ def main() -> None:
 
     ##################### CODE TO PLOT EOS #####################
 
-	EOSs: EquationOfState = [RIPEOS(tables_folder + 'QM_EOS/pQCD_X2.csv'), 
-                                RIPEOS(tables_folder + 'QM_EOS/pQCD_X3.csv'), 
-                                    RIPEOS(tables_folder + 'QM_EOS/pQCD_X4.csv')]
-    
-	labels: list[str]     = ['X = 2', 'X = 3', 'X = 4']
-	colors: list[str]     = ['green', 'orange', 'gray']
-	linestyles: list[str] = ['--', '-', ':']
-	pressures: Array      = np.geomspace(1e-4, 1e1, 200)
-	xlim: tuple           = (1e-2, 1e1)
-	ylim: tuple           = (1e-4, 1e1)
-	linewidth: float      = 2
+	MF = 100
+	Y  = 0
 
-	#plot_eos(EOSs=EOSs, labels=labels, linestyles=linestyles, colors=colors, pressures=pressures,
-    #            xlim=xlim, ylim=ylim, linewidth=linewidth, path=output_folder)         
+	dimensionless_FDM_table_maker(MF=MF, Y=Y)
+
+	EOSs: EquationOfState = [RIPEOS(tables_folder + f'DM_EOS/dimesionless_f_dm_m_y{Y}.csv')]
+    
+	labels: list[str]     = ['']
+	colors: list[str]     = ['green']
+	linestyles: list[str] = ['--']
+	pressures: Array      = np.geomspace(1e-12, 1e6, 200)
+	xlim: tuple           = (1e-9, 1e8)
+	ylim: tuple           = (1e-14, 1e8)
+	linewidth: float      = 2
+	xlabel: str = r'$\epsilon$'
+	ylabel: str = r'p'
+
+	plot_eos(EOSs=EOSs, labels=labels, linestyles=linestyles, colors=colors, pressures=pressures,
+                xlim=xlim, ylim=ylim, linewidth=linewidth, path=output_folder, xlabel=xlabel, ylabel=ylabel)         
 
     ############################################################
 

@@ -2,9 +2,8 @@ import functools
 import numpy as np
 from typing import Any
 from dataclasses import dataclass, field
-import matplotlib.pyplot as plt
 
-from .tov_solver import Array, TOVInput, solve_tov
+from .tov_solver_dimensionless import Array, TOVInput, solve_tov
 from .stability import CentralRadOscInput, RadOscInput, Stability
 from .structure import InternalProfiles, Star, interpol_tov, tov_coeffs
 
@@ -16,19 +15,11 @@ class StarFactory:
     tov_input: TOVInput
     tov_solution: Any = field(init=False)
 
-    def create_star(self, central_pressure: float) -> Star:
-        self.tov_solution: Any = solve_tov(self.tov_input, central_pressure)
+    def create_star(self, central_pressure: float, max_step: float) -> Star:
+        self.tov_solution: Any = solve_tov(self.tov_input, central_pressure, max_step)
 
         radius = float(self.tov_solution.t_events[0][0])
-        mass = float(self.tov_solution.y_events[0][0][1])
-
-        #print(type(self.tov_solution.t))
-        #print(type(self.tov_solution.y[2]))
-        #print(self.tov_solution.t)
-        #print(self.tov_solution.y[2])
-
-        plt.plot(self.tov_solution.t, self.tov_solution.y[2])
-        plt.savefig('p_X_r_MF100_Y0.png')
+        mass = float(self.tov_solution.y_events[0][0][0])
 
         return Star(central_pressure, radius, mass)
 
